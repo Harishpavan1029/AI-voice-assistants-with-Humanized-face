@@ -1,53 +1,13 @@
 //--------------------------------------
+// THIS IS THE TRANSMITTER CODE
 //--------------------------------------
-// this is transmitter
 
-/*
-include <Arduino.h>
-
-// Create a HardwareSerial instance for UART2
-HardwareSerial mySerial(2);  // '2' selects UART2
-
-// Define your custom pins for UART2
-const int RX_PIN = 16;  // Not used in transmitter, but must be set
-const int TX_PIN = 17;  // TX from this board
-
-void setup() {
-  Serial.begin(115200);  // For debugging via USB
-  // Initialize UART2 at 9600 baud. (You can choose a different baud rate if needed.)
-  mySerial.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN);
-  delay(1000);  // Give some time for the serial ports to initialize
-
-  Serial.println("Transmitter ready");
-}
-
-void loop() {
-  String message = "Hello from Transmitter!";
-  mySerial.println(message);  // Send the message over UART2
-  Serial.print("Sent: ");
-  Serial.println(message);
-  delay(1000);  // Send a message every second
-}
-
-*/
-
-
-//--------------------------------------------------------
 
 
 #include "BluetoothSerial.h"
 
 #include <ESP32Servo.h>
 #include <Arduino.h>
-
-// Servo jawServo;  // Create a Servo object
-// Servo neckServo;  // Create a Servo object
-
-
-// const int jawservoPin = 18;  // GPIO pin for the servo motor
-// const int neckservoPin = 21;  // GPIO pin for the servo motor
-
-
 
 
 BluetoothSerial SerialBT;  // Create Bluetooth Serial Object
@@ -74,22 +34,17 @@ void setup() {
   jawServo.attach(jawservoPin); 
   jawServo.write(120);
 
-  // jawServo.attach(jawservoPin);
-  // neckServo.attach(neckservoPin);
   
-    
-    
-  // jawServo.write(120);
-  // delay(200);
-  // neckServo.write(90);
-  // delay(200);
-  
-
+  neckServo.attach(neckservoPin);
   
     
     }
 void loop() {
     String message = "";
+
+  // ----------------------
+  // Read Bluetooth Input
+  // ----------------------
 
     while (SerialBT.available()) {
     
@@ -99,7 +54,9 @@ void loop() {
       message += receivedChar;  // Concatenate character
 
     }
-  //String message = "Hello from Transmitter!";
+  // ----------------------
+  // If a message was received, send over UART2
+  // ----------------------
   if (message.length()>0){
     
     mySerial.println(message);  // Send the message over UART2
@@ -107,6 +64,10 @@ void loop() {
     Serial.println(message);
     delay(1000);  // Send a message every second
   } 
+
+  // ----------------------
+  // Sound Sensor Reaction
+  // ----------------------
 
   int soundLevel = analogRead(soundSensorPin);
   if (soundLevel > 300) {
