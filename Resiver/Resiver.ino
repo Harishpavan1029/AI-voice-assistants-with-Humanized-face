@@ -1,40 +1,6 @@
 //--------------------------------------
+// THIS IS THE RECEIVER CODE
 //--------------------------------------
-// this is receiver
-
-/*
-#include <Arduino.h>
-
-// Create a HardwareSerial instance for UART2
-HardwareSerial mySerial(2);  // '2' selects UART2
-
-// Use matching pins for UART2; note that here RX is critical.
-const int RX_PIN = 16;  // RX for this board (should connect to the TX of the transmitter)
-const int TX_PIN = 17;  // Not used in receiver for now, but set for initialization
-
-void setup() {
-  Serial.begin(115200);  // For debugging via USB
-  // Initialize UART2 at 9600 baud.
-  mySerial.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN);
-  delay(1000);
-
-  Serial.println("Receiver ready");
-}
-
-void loop() {
-  // Check if data is available on UART2
-  if (mySerial.available() > 0) {
-    String receivedMessage = mySerial.readStringUntil('\n');
-    Serial.print("Received: ");
-    Serial.println(receivedMessage);
-  }
-}*/
-
-
-
-//--------------------------------------------------------------------------------
-
-
 
 
 
@@ -47,9 +13,9 @@ void loop() {
 #include "Audio.h"
 # include <ESP32Servo.h>
 
-const char* ssid = "Redmi 10C";
-const char* password = "pavan1029";
-const char* openai_api_key = "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";
+const char* ssid = "Redmi 10C"; //YOUR WIFI SSID
+const char* password = "pavan1029"; //YOUR WIFI PASSWORD
+const char* openai_api_key = "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"; // Your OpenAI API Key
 const char* openai_endpoint = "https://api.openai.com/v1/chat/completions";
 Servo DownServo;
 Servo UpServo;
@@ -101,6 +67,10 @@ void setup() {
 
 
 void loop() {
+
+  // ----------------------
+  // Check for UART Messages
+  // ----------------------
   if (mySerial.available() > 0) {
         String receivedMessage = mySerial.readStringUntil('\n');
         Serial.print("Received: ");
@@ -132,13 +102,17 @@ void loop() {
     
 }
 
+// ======================================================
+// FUNCTION: Send text to ChatGPT API
+// ======================================================
+
 String sendToChatGPT(String text) {
 
   if (text=="hi"){
       text = "hello";
     }
     else{
-      text += "give short answer with 90 letters without imoji";
+      text += "give short answer with 90 letters without imoji"; // THIS IS BECAUSE ESP32 MEMORY ISSUE 
     }
    HTTPClient http;
     
@@ -191,6 +165,9 @@ String sendToChatGPT(String text) {
     
 }
 
+// ======================================================
+// Audio Debug Info
+// ======================================================
 void audio_info(const char *info) {
   Serial.print("audio_info: "); Serial.println(info);
 }
