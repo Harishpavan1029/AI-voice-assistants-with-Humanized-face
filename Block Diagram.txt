@@ -1,0 +1,37 @@
+   [ User / Phone ]
+          |
+     (Bluetooth)
+          |
+   --------------------
+   |   ESP32           |   <-- TRANSMITTER
+   |  - Bluetooth RX   |
+   |  - Sound Sensor   |
+   |  - Jaw Servo      |
+   --------------------
+          |
+       (UART2)
+          |
+   --------------------
+   |   ESP32           |   <-- RECEIVER
+   |  - WiFi Client    |
+   |  - Up & Down Servos
+   |  - Audio (I2S DAC)
+   --------------------
+          |
+       (WiFi HTTP)
+          |
+   --------------------
+   |  OpenAI ChatGPT   |
+   |  Cloud API Server |
+   --------------------
+          |
+       (API Response)
+          |
+   --------------------
+   |   ESP32 RECEIVER  |
+   |  - Parses Reply   |
+   |  - Moves Servos   |
+   |  - Plays TTS      |
+   --------------------
+          |
+   [ Speaker + Robot Motions ]
